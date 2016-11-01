@@ -21,8 +21,8 @@ definition(
     oauth: [displayName: "Things2SpringXD", displayLink: ""])
 
 preferences {
-	section("Allow Endpoint to Control These Things...") {
-		input "switches", "capability.switch", title: "Which Switches?", multiple: true, required: false
+    section("Allow Endpoint to Control These Things...") {
+	input "switches", "capability.switch", title: "Which Switches?", multiple: true, required: false
         input "dimmers", "capability.switchLevel", title: "Which Dimmers?", multiple: true, required: false
         input "thermostats", "capability.thermostat", title: "Which Thermostats?", multiple: true, required: false 
         input "motions", "capability.motionSensor", title: "Which Motions?", multiple: true, required: false
@@ -36,12 +36,7 @@ preferences {
         input "batteries", "capability.battery", title: "Which Batteries?", multiple: true, required: false
        	input "powers", "capability.powerMeter", title: "Power Meters", required:false, multiple: true
     	input "energys", "capability.energyMeter", title: "Energy Meters", required:false, multiple: true 
-        
-      
-        
-         
-        
-	}
+    }
 }
 
 
@@ -68,8 +63,6 @@ def initialize() {
     subscribe(powers, "power", handlePowerEvent)
     subscribe(energys, "energy", handleEnergyEvent)
     subscribe(presence, "presence", handlePresenceEvent)
-   
-    
 }
 
 def handleIlluminanceEvent(evt) {
@@ -124,40 +117,38 @@ def handleEnergyEvent(evt) {
 def handlePresenceEvent(evt) {
     logField(evt) { it.toString() }
 }
+
 mappings {
-
-
-	path("/switches") {
-		action: [
-			GET: "listSwitches"
-		]
-	}
-	path("/switches/:id") {
-		action: [
-			GET: "showSwitch"
-		]
-	}
-	path("/switches/:id/:command") {
-		action: [
-			GET: "updateSwitch"
-		]
-	}
+    path("/switches") {
+        action: [
+           GET: "listSwitches"
+        ]
+    }
+    path("/switches/:id") {
+        action: [
+           GET: "showSwitch"
+        ]
+    }
+    path("/switches/:id/:command") {
+        action: [
+            GET: "updateSwitch"
+        ]
+    }
     path("/switches/:id/:events") {
-		action: [
-			GET: "showSwitchEvents"
-		]
-	}
-    
+        action: [
+            GET: "showSwitchEvents"
+        ]
+    }
     path("/locks") {
-		action: [
-			GET: "listLocks"
-		]
-	}
+        action: [
+            GET: "listLocks"
+        ]
+    }
     path("/locks/:id") {
-		action: [
-			GET: "showLock"
-		]
-	}
+        action: [
+            GET: "showLock"
+        ]
+    }
     path("/locks/:id/:command") {
 		action: [
 			GET: "updateLock"
@@ -315,22 +306,17 @@ def listSwitches() {
 	switches: switches?.collect{[type: "switch", id: it.id, name: it.displayName, status: it.currentValue('switch')]}?.sort{it.name}
 }
 
-
 def showSwitch() {
-	show(switches, "switch")
-   
+	show(switches, "switch")   
 }
 
 def showSwitchEvents() {
     getEvents(switches, "switch")
 }
 
-
 void updateSwitch() {
 	update(switches)
 }
-
-
 
 //dimmers
 def listDimmers() {
@@ -344,10 +330,8 @@ void updateDimmer() {
 }
 
 //locks
-
 def listLocks() {
      lock?.collect{[type: "lock", id: it.id, name: it.displayName, status: it.currentValue('lock')]}?.sort{it.name}
-
 }
 def showLock() {
 	show(lock, "lock")
@@ -356,156 +340,134 @@ void updateLock() {
 	update(lock)
 }
 
-
-
-
+//temperatures
 def listTemperatures() {
 	temperatures?.collect{[type: "temperatureMeasurement", id: it.id, name: it.displayName, status: it.currentValue('temperature')]}?.sort{it.name}
-
 }
 def showTemperature() {
 	show(temperatures, "temperature")
 }
 
+//humidities
 def listHumidities() {
 	humidities?.collect{[type: "relativeHumidityMeasurement", id: it.id, name: it.displayName, status: it.currentValue('humidity')]}?.sort{it.name}
-
 }
 def showHumidity() {
 	show(humidities, "humidity")
 }
 
+//presence
 def listPresence() {
 	presence?.collect{[type: "presence", id: it.id, name: it.displayName, status: it.currentValue('presence')]}?.sort{it.name}
-
 }
 def showPresence() {
 	show(presence, "presence")
 }
 
-
+//motion
 def listMotions() {
      motions?.collect{[type: "motion", id: it.id, name: it.displayName, status: it.currentValue('motion')]}?.sort{it.name}
-
 }
 def showMotion() {
-	show(motions, "motion")
-    
+	show(motions, "motion")    
 }
-
 def showMotionEvents() {
     getEvents(motions, "motion")
 }
 
-
+//illumination
 def listIlluminants() {
      illuminants?.collect{[type: "illuminant", id: it.id, name: it.displayName, status: it.currentValue('illuminance')]}?.sort{it.name}
-
 }
 def showIlluminant() {
 	show(illuminants, "illuminance")
 }
 
+//contact
 def listContacts() {
      contacts?.collect{[type: "contact", id: it.id, name: it.displayName, status: it.currentValue('contact')]}?.sort{it.name}
-
 }
 def showContact() {
 	show(contacts, "contact")
 }
 
-
+//battery
 def listBatteries() {
      batteries?.collect{[type: "battery", id: it.id, name: it.displayName, status: it.currentValue('battery')]}?.sort{it.name}
-
 }
 def showBattery() {
 	show(batteries, "battery")
 }
 
-
+//power
 def listPowers() {
      powers?.collect{[type: "power", id: it.id, name: it.displayName, status: it.currentValue("power")]}?.sort{it.name}
-
 }
 def showPower() {
 	show(powers, "power")
 }
 
+//energy
 def listEnergies() {
      energys?.collect{[type: "energy", id: it.id, name: it.displayName, status: it.currentValue("energy")]}?.sort{it.name}
-
 }
 def showEnergy() {
 	show(energys, "energy")
 }
 
-
 //thermostats
 def listThermostats() {
 	thermostats.collect{device(it,"thermostat")}
 }
-
 def showThermostat() {
 	show(thermostats, "thermostat")
 }
-
 void updateThermostat() {
-
-	def device = thermostats.find { it.id == params.id }
-	def command = params.command
-	def temp = params.temp
-
+    def device = thermostats.find { it.id == params.id }
+    def command = params.command
+    def temp = params.temp
     log.debug "$command ${params.id} at $temp"
-
-	if(command == 'heat')
-	{
-		device.setHeatingSetpoint(temp)
-	}
-	else if(command == 'cool')
-	{
-	  device.setCoolingSetpoint(temp)	
-	}
+        if(command == 'heat') {
+            device.setHeatingSetpoint(temp)
+        }
+        else if(command == 'cool') {
+            device.setCoolingSetpoint(temp)	
+        }
 }
+
 
 def deviceHandler(evt) {}
 
 private void update(devices) {
-	log.debug "update, request: params: ${params}, devices: $devices.id"
-
-
-	//def command = request.JSON?.command
+    log.debug "update, request: params: ${params}, devices: $devices.id"
+    //def command = request.JSON?.command
     def command = params.command
-	def level = params.level
+    def level = params.level
     //let's create a toggle option here
-	if (command) 
-    {
-		def device = devices.find { it.id == params.id }
-		if (!device) {
-			httpError(404, "Device not found")
-		} else {
-        	if(command == "toggle")
-       		{
-            	if(device.currentValue('switch') == "on")
-                  device.off();
-                else
+    if (command) {
+        def device = devices.find { it.id == params.id }
+        if (!device) {
+            httpError(404, "Device not found")
+        } else {
+            if(command == "toggle") {
+                if(device.currentValue('switch') == "on") {
+                    device.off();
+		}
+		else {
                   device.on();
-       		}
-            else if(command == "level")
-            {
-            	device.setLevel(level.toInteger())
+		}
             }
-            else if(command == "events")
-            {
+            else if(command == "level") {
+                device.setLevel(level.toInteger())
+            }
+            else if(command == "events") {
             	device.events(max: 20)
             }
-         
-       		else
-       		{
-				device."$command"()
+            else {
+                device."$command"()
             }
-		}
-	}
+        }
+    }
 }
 
 private show(devices, type) {
